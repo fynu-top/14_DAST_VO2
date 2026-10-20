@@ -11,14 +11,16 @@ from matplotlib import pyplot as plt
 from matplotlib.patches import Rectangle
 
 # ===== User settings: VS Code Run Python File requires NO command-line arguments =====
+
 flag = 0
 STEP_NM = 20.0
-BASE_ORDER, NX, NV = 21, 256, 3
-FOURIER_ORDERS = (17,19,21,23,25,27)
+BASE_ORDER, NX, NV = 27, 256, 3
+FOURIER_ORDERS = (23,25,27,29,31)
 CHECK_FOURIER = 1
 CHECK_PIXELS = 0
 SHOW_FIGURE = 1
 TOL_WEIGHT, TOL_RTA = 1e-4, 1e-3
+
 
 # Editable starting geometry; all lengths in nm. VO2 occupies f of each period.
 D_ITO1, D_DAST, D_ITO2, D_SIO2 = 30., 85., 30., 175.
