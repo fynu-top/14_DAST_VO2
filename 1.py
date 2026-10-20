@@ -12,7 +12,7 @@ from matplotlib.patches import Rectangle
 
 # ===== User settings: VS Code Run Python File requires NO command-line arguments =====
 
-flag = 0
+flag = 1
 STEP_NM = 20.0
 BASE_ORDER, NX, NV = 27, 256, 3
 FOURIER_ORDERS = (23,25,27,29,31)
