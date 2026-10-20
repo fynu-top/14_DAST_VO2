@@ -30,8 +30,8 @@ from matplotlib.patches import Rectangle
 # ===== User settings: VS Code Run Python File requires NO command-line arguments =====
 flag = 0                 # 1: CUDA (fail explicitly if unavailable); 0: CPU
 STEP_NM = 20.0          # Main wavelength sampling in nm; refine to 10, 5, 2 for publication
-BASE_ORDER, NX, NV = 11, 256, 3
-FOURIER_ORDERS = (7,9,11,13,15,17)  # x truncation N, with 2N+1 Fourier orders
+BASE_ORDER, NX, NV = 17, 256, 3
+FOURIER_ORDERS = (11,13,15,17,19,21)  # x truncation N, with 2N+1 Fourier orders
 CHECK_FOURIER = 1       # 1: audit both VO2 phases at -Vmax, 0, +Vmax
 CHECK_PIXELS = 0        # 1: also test spatial grid Nx -> 2Nx at highest N (slow)
 SHOW_FIGURE = 1         # 1: show one 2x4 figure; no files exported
