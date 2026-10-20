@@ -1,22 +1,5 @@
 #!/usr/bin/env python3
-"""Pure-Python TORCWA simulation: Air/ITO/DAST/ITO/SiO2/VO2-strips/Air.
 
-Read ORIGINAL measured/tabulated Excel/CSV data directly from the local project;
-MATLAB, Janus.m, and Janus.py are NOT called. No synthetic optical constants.
-    python -m pip install numpy scipy pandas openpyxl matplotlib torch torcwa
-    python DAST_VO2_TORCWA_1D.py --project "D:/09_PCloud/14_DAST_VO2" --quick
-    python DAST_VO2_TORCWA_1D.py --project "D:/09_PCloud/14_DAST_VO2"
-
-Optional --torcwa-path points at a checked-out torcwa repository root. Source
-complex indices from spreadsheets are n - i*k (MATLAB notation), converted to
-n + i*k as required by TORCWA exp(-i*omega*t).
-
-Trial geometry, not optimized; normal incidence, 1D x-periodic VO2 strips,
-TE=Ey / TM=Ex, scalar DAST E1/L1 model, fixed insulating/metallic VO2 states.
-A single 2x4 figure includes the Fourier-order convergence audit. Run this file
-directly in VS Code; edit flag=1 for CUDA, flag=0 for CPU. No data export.
-The --quick mode is a functional test, NOT adequate for quantitative reporting.
-"""
 from pathlib import Path
 import argparse, importlib, sys, time, warnings
 SCRIPT_START=time.perf_counter()
@@ -30,8 +13,8 @@ from matplotlib.patches import Rectangle
 # ===== User settings: VS Code Run Python File requires NO command-line arguments =====
 flag = 0                 # 1: CUDA (fail explicitly if unavailable); 0: CPU
 STEP_NM = 20.0          # Main wavelength sampling in nm; refine to 10, 5, 2 for publication
-BASE_ORDER, NX, NV = 17, 256, 3
-FOURIER_ORDERS = (11,13,15,17,19,21)  # x truncation N, with 2N+1 Fourier orders
+BASE_ORDER, NX, NV = 21, 256, 3
+FOURIER_ORDERS = (17,19,21,23,25,27)  # x truncation N, with 2N+1 Fourier orders
 CHECK_FOURIER = 1       # 1: audit both VO2 phases at -Vmax, 0, +Vmax
 CHECK_PIXELS = 0        # 1: also test spatial grid Nx -> 2Nx at highest N (slow)
 SHOW_FIGURE = 1         # 1: show one 2x4 figure; no files exported
