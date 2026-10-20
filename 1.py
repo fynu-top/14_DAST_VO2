@@ -11,14 +11,15 @@ from matplotlib import pyplot as plt
 from matplotlib.patches import Rectangle
 
 # ===== User settings: VS Code Run Python File requires NO command-line arguments =====
-flag = 0                 # 1: CUDA (fail explicitly if unavailable); 0: CPU
-STEP_NM = 20.0          # Main wavelength sampling in nm; refine to 10, 5, 2 for publication
+flag = 0
+STEP_NM = 20.0
 BASE_ORDER, NX, NV = 21, 256, 3
-FOURIER_ORDERS = (17,19,21,23,25,27)  # x truncation N, with 2N+1 Fourier orders
-CHECK_FOURIER = 1       # 1: audit both VO2 phases at -Vmax, 0, +Vmax
-CHECK_PIXELS = 0        # 1: also test spatial grid Nx -> 2Nx at highest N (slow)
-SHOW_FIGURE = 1         # 1: show one 2x4 figure; no files exported
-TOL_WEIGHT, TOL_RTA = 1e-4, 1e-3  # exploratory differences, not absolute error guarantees
+FOURIER_ORDERS = (17,19,21,23,25,27)
+CHECK_FOURIER = 1
+CHECK_PIXELS = 0
+SHOW_FIGURE = 1
+TOL_WEIGHT, TOL_RTA = 1e-4, 1e-3
+
 # Editable starting geometry; all lengths in nm. VO2 occupies f of each period.
 D_ITO1, D_DAST, D_ITO2, D_SIO2 = 30., 85., 30., 175.
 PERIOD, FILL, H_VO2 = 300., 0.50, 40.
