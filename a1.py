@@ -8,7 +8,7 @@ from matplotlib.patches import Rectangle
 # ===== EDIT THESE SETTINGS; VS Code: Run Python File =====
 flag=0                              # 0 CPU, 1 CUDA; small complex128 systems often favour CPU
 QUICK=0                             # 1: functional check only (40 nm, N=1, 48x48)
-STEP_NM=5.; ORDER=3; NX=NY=56         # preliminary working grid, NOT certified converged
+STEP_NM=20; ORDER=32; NX=NY=40         # preliminary working grid, NOT certified converged
 P=400.; WIDTH=180.                   # common aligned square width; area fill=(WIDTH/P)^2
 H_VO2=12.; H_SIO2_PATCH=60.; H_AU=12.; H_PMMA_TOP=15.
 H_ITO1=5.; H_DAST=95.; H_ITO2=5.      # all three layers continuous, no bottom Au sheet
