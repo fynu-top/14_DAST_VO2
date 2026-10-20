@@ -1,13 +1,4 @@
 
-#!/usr/bin/env python3
-"""True 2D aligned VO2/SiO2/Au square stack in PMMA, above continuous ITO/DAST/ITO.
-Air / PMMA cap / patterned VO2 / patterned SiO2 / patterned Au / ITO / DAST /
-ITO / semi-infinite lossless SiO2. Pattern gaps contain PMMA at EVERY patterned z.
-Not the old 10.py geometry. Not yet optimized. No MATLAB, no automatic downloads,
-no exports. Tested API: torcwa 0.1.4.2. Python 3.9-compatible; CPU default.
-Dependencies: numpy scipy pandas openpyxl matplotlib torch torcwa.
-Place beside original optical_constants, Atmospheric data, VO2_temperature_data.
-"""
 from pathlib import Path
 import argparse,time,warnings
 import numpy as np,pandas as pd,torch,torcwa
@@ -17,7 +8,7 @@ from matplotlib.patches import Rectangle
 # ===== EDIT THESE SETTINGS; VS Code: Run Python File =====
 flag=0                              # 0 CPU, 1 CUDA; small complex128 systems often favour CPU
 QUICK=0                             # 1: functional check only (40 nm, N=1, 48x48)
-STEP_NM=5.; ORDER=3; NX=NY=80         # preliminary working grid, NOT certified converged
+STEP_NM=5.; ORDER=3; NX=NY=56         # preliminary working grid, NOT certified converged
 P=400.; WIDTH=180.                   # common aligned square width; area fill=(WIDTH/P)^2
 H_VO2=12.; H_SIO2_PATCH=60.; H_AU=12.; H_PMMA_TOP=15.
 H_ITO1=5.; H_DAST=95.; H_ITO2=5.      # all three layers continuous, no bottom Au sheet
