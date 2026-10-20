@@ -1,4 +1,12 @@
-
+#!/usr/bin/env python3
+"""FAST exploratory version: true 2D aligned VO2/SiO2/Au square stack in PMMA, above continuous ITO/DAST/ITO.
+Air / PMMA cap / patterned VO2 / patterned SiO2 / patterned Au / ITO / DAST /
+ITO / semi-infinite lossless SiO2. Pattern gaps contain PMMA at EVERY patterned z.
+Not the old 10.py geometry. Not yet optimized. No MATLAB, no automatic downloads,
+no exports. Tested API: torcwa 0.1.4.2. Python 3.9-compatible; CPU default.
+Dependencies: numpy scipy pandas openpyxl matplotlib torch torcwa.
+Place beside original optical_constants, Atmospheric data, VO2_temperature_data.
+"""
 from pathlib import Path
 import argparse,time,warnings
 import numpy as np,pandas as pd,torch,torcwa
@@ -7,16 +15,16 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 # ===== EDIT THESE SETTINGS; VS Code: Run Python File =====
 flag=0                              # 0 CPU, 1 CUDA; small complex128 systems often favour CPU
-QUICK=0                             # 1: functional check only (40 nm, N=1, 48x48)
-STEP_NM=20; ORDER=32; NX=NY=40         # preliminary working grid, NOT certified converged
+QUICK=0                             # 1: fewer wavelengths (40 nm); retains N=2
+STEP_NM=25.; ORDER=2; NX=NY=32        # fast screening only; not convergence-certified
 P=400.; WIDTH=180.                   # common aligned square width; area fill=(WIDTH/P)^2
 H_VO2=12.; H_SIO2_PATCH=60.; H_AU=12.; H_PMMA_TOP=15.
 H_ITO1=5.; H_DAST=95.; H_ITO2=5.      # all three layers continuous, no bottom Au sheet
 VOLTAGES=(-8.5,0.,8.5); PHASES=('I','M'); E_LIMIT=100.; MARGIN=.005
 EO_SIGN=1.; DAST_SOURCE='hybrid'; ITO_FILE='4TIO.xlsx'
 LOSSLESS_PMMA=True                   # same transparent-host assumption as 10.py; set False to retain k
-RUN_CONTROLS=1; RUN_OLD10=1           # no-VO2 + full-coverage & equal-volume films + old10 at 0V
-CHECK_FOURIER=1; CHECK_WAVELENGTH=0  # Fourier/pixel probes; optional extra full spectrum at STEP/2
+RUN_CONTROLS=0; RUN_OLD10=0           # no-VO2 + full-coverage & equal-volume films + old10 at 0V
+CHECK_FOURIER=0; CHECK_WAVELENGTH=0  # Fourier/pixel probes; optional extra full spectrum at STEP/2
 SHOW_FIGURE=1; PROJECT=Path(__file__).resolve().parent
 DTYPE=torch.complex128; TRAPZ=np.trapezoid if hasattr(np,'trapezoid') else np.trapz
 
@@ -240,7 +248,7 @@ def draw(d,spec,table,control):
     for phase in PHASES:
         for _,r in control[control.Phase==phase].iterrows():
             ax[7].scatter(r.Tlum,abs(r.DA),color=colors[phase],marker='o' if r.Geometry=='pattern' else 'x');ax[7].annotate(phase+': '+r.Geometry,(r.Tlum,abs(r.DA)),fontsize=6,xytext=(3,3),textcoords='offset points')
-    ax[7].set(title='(h) Zero-bias controls',xlabel='Min luminous total T',ylabel='|DA_sol| (not reversal)')
+    ax[7].set(title='(h) Zero-bias states / optional controls',xlabel='Min luminous total T',ylabel='|DA_sol| (not reversal)')
     for a in ax[1:7]:a.legend(fontsize=8);a.grid(alpha=.15)
     ax[7].grid(alpha=.15);fig.suptitle('VO2 / SiO2 / Au patterned trilayer + continuous ITO / DAST / ITO — exploratory',fontsize=13)
     return fig
@@ -254,7 +262,7 @@ def main():
     if tuple(PHASES)!=('I','M') or 0. not in VOLTAGES or len(set(VOLTAGES))!=len(VOLTAGES):raise ValueError('Use PHASES=(I,M), unique voltages including 0.')
     if max(map(abs,VOLTAGES))*1000/H_DAST>E_LIMIT+1e-6:raise ValueError('DAST field exceeds E_LIMIT.')
     device=torch.device('cuda' if flag else 'cpu');torch.set_num_threads(1);torch.backends.cuda.matmul.allow_tf32=False
-    step,order,nx,ny=(40.,1,48,48) if QUICK else (STEP_NM,ORDER,NX,NY)
+    step,order,nx,ny=(40.,2,32,32) if QUICK else (STEP_NM,ORDER,NX,NY)
     d=load_data(step);mask=mask_square(WIDTH,nx,ny,device)
     print(f'DEVICE={device}; torch={torch.__version__}; complex128; DAST field limit={E_LIMIT:g} V/um')
     print(f'NEW: air / PMMA({H_PMMA_TOP:g}) / aligned [VO2({H_VO2:g}), SiO2({H_SIO2_PATCH:g}), Au({H_AU:g})] squares / ITO({H_ITO1:g}) / DAST({H_DAST:g}) / ITO({H_ITO2:g}) / SiO2 half-space')
@@ -302,7 +310,7 @@ def main():
     print('EO_off controls reuse 0V spectra exactly (same n when beta=0). No-VO2 preserves patch-zone thickness by replacing VO2 with PMMA.')
     print('Equal-volume films occupy fraction f of each slab height, centered in PMMA; this is a specified reference, not a unique homogenization.')
     print('Tlum0 is ZERO DIFFRACTION ORDER, not zero voltage. Backward illumination originates in the SiO2 half-space; no rear air/glass interface is included.')
-    print('Probe convergence is not a whole-spectrum certificate. 3 voltage points cannot establish continuous range or minimum switching voltage.')
+    print('FAST SCREENING: Fourier/pixel/wavelength convergence is NOT established. Three voltage points cannot exclude intermediate reversals or locate switching thresholds.')
     print(f'Elapsed={time.perf_counter()-start:.1f}s; one figure; no file exports.')
     fig=draw(d,spec,table,control)
     if SHOW_FIGURE:plt.show()
