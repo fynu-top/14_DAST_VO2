@@ -28,7 +28,7 @@ from matplotlib import pyplot as plt
 from matplotlib.patches import Rectangle
 
 # ===== User settings: VS Code Run Python File requires NO command-line arguments =====
-flag = 0                 # 0=CPU (faster here); 1=CUDA; set once, click Run in VS Code
+flag = 1                 # 0=CPU (faster here); 1=CUDA; set once, click Run in VS Code
 STEP_NM = 20.0           # Main spectrum step, nm
 BASE_ORDER, NX, NV = 31, 256, 3  # Fixed N=31 for pixel/wavelength audits
 CHECK_FOURIER = 0        # Use 1 only when rechecking Fourier truncation
